@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react'
 import { Layout, theme } from 'antd'
-import Sidebar from '@/components/Sidebar'
-import DashboardHeader from '@/components/Header'
+import Header from "@/components/Header";
 
 const { Content } = Layout
 
@@ -18,32 +17,15 @@ export default function DashboardLayout({ children }) {
 	}
 
 	return (
-		/*<Layout style={{ minHeight: '100vh'}}>
-			<Sidebar collapsed={collapsed} />
-			<Layout>
-				<DashboardHeader collapsed={collapsed} toggle={toggleSidebar} />
-				<Content
-					style={{
-						margin: '24px 16px',
-						padding: 24,
-						minHeight: 280,
-						background: colorBgContainer,
-					}}
-				>
-					{children}
-				</Content>
-			</Layout>
-		</Layout>*/
 		<Layout style={{ minHeight: '100vh'}}>
-			<DashboardHeader collapsed={collapsed} toggle={toggleSidebar} />
-			<Layout style={{minHeight: '100vh',}}>
-				<Sidebar collapsed={collapsed} />
+			<Header collapsed={collapsed} toggle={toggleSidebar} />
+			<Layout>
 				<Content
 					style={{
-						margin: '24px 16px',
+						margin: '24px 15%',
 						padding: 24,
-						minHeight: 280,
-						background: colorBgContainer,
+						paddingTop: 8,
+						background: 'transparent',
 					}}
 				>
 					{children}
