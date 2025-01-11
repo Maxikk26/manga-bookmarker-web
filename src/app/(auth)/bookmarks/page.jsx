@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useState} from 'react'
-import {Pagination, Space, Table, Tag} from "antd";
+import {Pagination, Table, Tag} from "antd";
 
 const columns = [
 	{
