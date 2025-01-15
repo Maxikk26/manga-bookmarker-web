@@ -3,58 +3,6 @@
 import React, {useState} from 'react'
 import {Pagination, Table, Tag} from 'antd'
 
-const columns = [
-    {
-        title: 'Título',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: 'Estatus',
-        dataIndex: 'status',
-        key: 'status',
-        render: (status) => {
-            let color = 'green'
-            let name = 'Reading'
-            switch (status) {
-                case 2:
-                    color = 'yellow'
-                    name = 'On Hold'
-                    break
-                case 3:
-                    color = 'red'
-                    name = 'Dropped'
-                    break
-            }
-            return (
-                <Tag color={color} key={status}>
-                    {name.toUpperCase()}
-                </Tag>
-            )
-        }
-    },
-    {
-        title: 'Última lectura',
-        key: 'tags',
-        dataIndex: 'tags',
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color = tag.length > 5 ? 'geekblue' : 'green'
-                    if (tag === 'loser') {
-                        color = 'volcano'
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    )
-                })}
-            </>
-        ),
-    },
-]
-
 const tableProps = {
     showHeader:false
 }
@@ -66,6 +14,9 @@ const CustomTable = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(props.pageSize ?? 10);
 
+    const currentData = props.data.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    const columns = props.columns ?? [];
+
     const tableColumns = columns.map((item) => ({
         ...item,
         ellipsis,
@@ -76,7 +27,6 @@ const CustomTable = (props) => {
         setPageSize(pageSize);
     };
 
-    const currentData = props.data.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     const pagination = (
         <Pagination
