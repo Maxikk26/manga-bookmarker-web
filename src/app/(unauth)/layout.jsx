@@ -17,7 +17,7 @@ export default function UnAuthLayout({ children }) {
 	}
 
 	return (
-		<Layout style={{ height: "100vh",backgroundColor: 'red' }}>
+		<Layout style={{ height: "100vh",backgroundColor: '#C0C0C0C0' }}>
 			<Content>
 				<Row justify="center" align="middle" style={{ height: "100%" }}>
 					<Col>
@@ -36,9 +36,9 @@ const styles = {
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		backgroundColor: "#1890ff", // Ant Design primary color
-		borderRadius: "20%", // Optional: for rounded corners
-		width: "20vw", // 20% of the viewport width
+		backgroundColor: "white", // Ant Design primary color
+		borderRadius: "3%", // Optional: for rounded corners
+		width: "25vw", // 20% of the viewport width
 		aspectRatio: "1", // Ensures it's always a square
 	}
 };
