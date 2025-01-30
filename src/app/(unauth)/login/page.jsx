@@ -7,6 +7,13 @@ import {Button, Form, Input} from "antd";
 export default function LoginPage() {
 	const router = useRouter()
 
+	const formRules = {
+		required: {
+			required: true,
+			message: 'Required',
+		},
+	}
+
 	useEffect(() => {
 		router.prefetch('/bookmarks')
 	}, [router]);
@@ -38,12 +45,7 @@ export default function LoginPage() {
 				<Form.Item
 					label="Username"
 					name="username"
-					rules={[
-						{
-							required: true,
-							message: 'Required',
-						},
-					]}
+					rules={[formRules.required]}
 				>
 					<Input />
 				</Form.Item>
@@ -51,12 +53,8 @@ export default function LoginPage() {
 				<Form.Item
 					label="Password"
 					name="password"
-					rules={[
-						{
-							required: true,
-							message: 'Required',
-						},
-					]}
+					rules={[formRules.required]}
+
 				>
 					<Input.Password />
 				</Form.Item>
