@@ -3,6 +3,9 @@
 import React, {useEffect} from "react";
 import { useRouter } from 'next/navigation'
 import {Button, Form, Input} from "antd";
+import {apiFetch} from "@/services/api";
+import {login} from "@/services/authService";
+import {log} from "next/dist/server/typescript/utils";
 
 export default function LoginPage() {
 	const router = useRouter()
@@ -15,14 +18,29 @@ export default function LoginPage() {
 	}
 
 	useEffect(() => {
+		const token = localStorage.getItem("token");
+		if(token)
+			router.push('/bookmarks')
+	}, []);
+
+	useEffect(() => {
 		router.prefetch('/bookmarks')
 	}, [router]);
 
 
-	const onFinish = (values) => {
-		console.log('Success:', values);
-		router.push('/bookmarks');
+	const onFinish = async (values) => {
+		try{
+			const response = await login(values)
+			if (!response.ok) {
+				console.log("not ok",response)
+			}
+			localStorage.setItem("token",response.token)
+			router.push('/bookmarks');
+		}catch(error){
+			console.error("Login error:", error);
+		}
 	};
+
 	const onFinishFailed = (errorInfo) => {
 		console.log('Failed:', errorInfo);
 	};
