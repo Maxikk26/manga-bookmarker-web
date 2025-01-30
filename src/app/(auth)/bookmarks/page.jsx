@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react'
 import Table from "@/components/Table";
 import {Badge, Button, Dropdown, Space, Tag} from "antd";
 import {DownOutlined, SearchOutlined, SettingOutlined} from "@ant-design/icons";
+import {getUserBookmarks} from "@/services/bookmarkService";
 
 const data = [
 	{ key: '1', name: 'Absolute Regression', status: 1, lastRead: '01/01/2025', chapter:5, mangaInfo:{totalChapters:500} },
@@ -54,6 +55,15 @@ const columns = [
 		title: 'Título',
 		dataIndex: 'name',
 		key: 'name',
+		width: "30%",
+		render: (_,{mangaInfo}) =>{
+			console.log("mangaInfo",mangaInfo)
+			return (
+				<div>
+					{mangaInfo.name}
+				</div>
+			)
+		},
 	},
 	{
 		title: 'Estatus',
@@ -84,23 +94,30 @@ const columns = [
 		key: 'lastRead',
 		dataIndex: 'lastRead',
 		render: (_,{lastRead,chapter,mangaInfo}) =>{
-			console.log("mangaInfo",mangaInfo)
-			const CHAPTER = "Capítulo " + chapter
+			const chapterTag = "Capítulo " + chapter
+			const date = new Date(lastRead);
+			const formatter = new Intl.DateTimeFormat("es-VE", {
+				day: "2-digit",
+				month: "2-digit",
+				year: "numeric"
+			});
+			const formattedDate = formatter.format(date);
+
 			return (
 				<div>
 					<Space>
 						{
 							mangaInfo?.totalChapters > chapter ?
 								<a>
-									<Badge count={'+'} color="green" onClick={() => {
+									<Badge count={'+'}  color="green" onClick={() => {
 										//TODO aumentar de 1 en 1 o hacer display de un formulario con un input del ultimo cap
 										console.log("test")
 									}}/>
 								</a> : null
 						}
-						<Badge count={CHAPTER} color={mangaInfo?.totalChapters > chapter ? "blue" : "gray"}/>
+						<Badge count={chapterTag} color={mangaInfo?.totalChapters > chapter ? "blue" : "gray"}/>
 					</Space>
-					<div>Última lectura: {lastRead}</div>
+					<div>Última lectura: {formattedDate}</div>
 				</div>
 			)
 		},
@@ -109,6 +126,7 @@ const columns = [
 		title: 'Acciones',
 		dataIndex: 'actions',
 		key:'actions',
+		width: "10%",
 		render: () => {
 			return (
 				<a onClick={()=>{
@@ -145,15 +163,27 @@ const columns = [
 
 export default function BookmarksPage() {
 
+	const [bookmarkData, setBookmarkData] = useState([])
+
 	useEffect(() => {
-		//TODO API calls
+		obtainUserBookmarks()
 	}, []);
 
+	const obtainUserBookmarks = async () => {
+		try{
+			const response = await getUserBookmarks({pageSize:'10'});
+			if(response.ok){
+				setBookmarkData(response.result)
+			}
+			console.log("response",response);
+		}catch (error){
+			// console.error("Login error:", error);
+		}
+	}
+
 	return (
-		<div>
-			<div style={{background:'white',borderRadius:'20px', padding:'2%'}}>
-				<Table data={data} columns={columns} pageSizeOptions={['10','20']} />
-			</div>
+		<div style={{background:'white',borderRadius:'20px', padding:'2%'}}>
+			<Table data={bookmarkData} columns={columns} pageSizeOptions={['5','10']} pageSize={5} />
 		</div>
 	)
 }

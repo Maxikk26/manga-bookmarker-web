@@ -33,8 +33,9 @@ export default function LoginPage() {
 			const response = await login(values)
 			if (!response.ok) {
 				console.log("not ok",response)
+				return
 			}
-			localStorage.setItem("token",response.token)
+			localStorage.setItem("token",response.result)
 			router.push('/bookmarks');
 		}catch(error){
 			console.error("Login error:", error);

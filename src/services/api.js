@@ -6,12 +6,19 @@ class ApiError extends Error {
 	}
 }
 
-export async function apiFetch(endpoint, options= {}) {
+export const API_V1 = "api/v1"
+
+export async function apiFetch(endpoint, options= {},auth = false, queryParams = {}) {
 	try {
 		const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-		const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+		const token = auth ? localStorage.getItem("token") : null;
 
-		const res = await fetch(`${API_BASE_URL}/${endpoint}`, {
+		const isValidQueryParams = queryParams && Object.keys(queryParams).length > 0;
+		const queryString = isValidQueryParams ? `?${new URLSearchParams(queryParams).toString()}` : "";
+
+		const url = `${API_BASE_URL}/${endpoint}${queryString}`;
+
+		const res = await fetch(url, {
 			cache: "no-store",
 			headers: {
 				"Content-Type": "application/json",
@@ -19,6 +26,8 @@ export async function apiFetch(endpoint, options= {}) {
 			},
 			...options,
 		});
+
+		console.log("res",res)
 
 		if (!res.ok) {
 			let errorMessage = `API error: ${res.status} ${res.statusText}`;

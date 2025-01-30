@@ -8,7 +8,7 @@ const tableProps = {
 }
 
 const CustomTable = (props) => {
-    const ellipsis = props.ellipsis ?? true;
+    const ellipsis = props.ellipsis ?? false;
     const pageSizeOptions = props.pageSizeOptions ?? ['10', '20', '30', '40'];
 
     const [currentPage, setCurrentPage] = useState(1);
