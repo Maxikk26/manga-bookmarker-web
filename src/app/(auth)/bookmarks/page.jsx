@@ -13,11 +13,8 @@ const columns = [
 		key: 'name',
 		width: "30%",
 		render: (_,{mangaInfo}) =>{
-			console.log("mangaInfo",mangaInfo)
 			return (
-				<div>
-					{mangaInfo.name}
-				</div>
+				<div>{mangaInfo.name}</div>
 			)
 		},
 	},
@@ -127,7 +124,7 @@ export default function BookmarksPage() {
 
 	const obtainUserBookmarks = async () => {
 		try{
-			const response = await getUserBookmarks({pageSize:'10'});
+			const response = await getUserBookmarks({pageSize:'20'});
 			if(response.ok){
 				setBookmarkData(response.result)
 			}
