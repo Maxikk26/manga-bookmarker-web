@@ -6,50 +6,6 @@ import {Badge, Button, Dropdown, Space, Tag} from "antd";
 import {DownOutlined, SearchOutlined, SettingOutlined} from "@ant-design/icons";
 import {getUserBookmarks} from "@/services/bookmarkService";
 
-const data = [
-	{ key: '1', name: 'Absolute Regression', status: 1, lastRead: '01/01/2025', chapter:5, mangaInfo:{totalChapters:500} },
-	{ key: '2', name: 'One Piece', status: 2, lastRead: '12/12/2024',chapter:5 },
-	{ key: '3', name: 'Naruto', status: 3, lastRead: '01/01/2025', chapter:200 },
-	{ key: '4', name: 'Bleach', status: 1, lastRead:  '12/12/2024', chapter:5 },
-	{ key: '5', name: 'One Piece', status: 1, lastRead: '01/01/2025', chapter:50},
-	{ key: '6', name: 'Naruto', status: 1, lastRead: '01/01/2025', chapter:5 },
-	{ key: '7', name: 'Bleach', status: 3, lastRead: '01/01/2025', chapter:12 },
-	{ key: '8', name: 'One Piece', status: 2, lastRead:  '12/12/2024', chapter:5 },
-	{ key: '9', name: 'Naruto', status: 2, lastRead: '01/01/2025', chapter:5 },
-	{ key: '10', name: 'Bleach', status: 2, lastRead: '01/01/2025', chapter:601 },
-	{ key: '11', name: 'One Piece', status: 1, lastRead: '12/12/2024', chapter:5 },
-	{ key: '12', name: 'Naruto', status: 1, lastRead: '01/01/2025', chapter:5 },
-	{ key: '13', name: 'Bleach', status: 1, lastRead: '01/01/2025', chapter:5 },
-	{ key: '14', name: 'One Piece', status: 3, lastRead: '12/12/2024', chapter:5 },
-	{ key: '15', name: 'Naruto', status: 3, lastRead: '01/01/2025', chapter:5 },
-	{ key: '16', name: 'Bleach', status: 1, lastRead: '12/12/2024', chapter:80 },
-	{ key: '17', name: 'One Piece', status: 2, lastRead: '01/01/2025', chapter:5 },
-	{ key: '18', name: 'Naruto', status: 1, lastRead: '12/12/2024', chapter:5 },
-	{ key: '19', name: 'Bleach', status: 2, lastRead: '01/01/2025', chapter:5 },
-	{ key: '20', name: 'One Piece', status: 1, lastRead: '01/01/2025', chapter:500 },
-	{ key: '21', name: 'Naruto', status: 3, lastRead: '12/12/2024', chapter:5 },
-	{ key: '22', name: 'Bleach', status: 3, lastRead: '01/01/2025', chapter:102 },
-	{ key: '23', name: 'One Piece', status: 1, lastRead: '12/12/2024', chapter:5 },
-	{ key: '24', name: 'Naruto', status: 2, lastRead: '01/01/2025', chapter:220 }
-];
-
-const items = [
-	{
-		key: '2',
-		label: 'Actualizar',
-	},
-	/*{
-		key: '3',
-		label: 'Billing',
-		extra: '⌘B',
-	},
-	{
-		key: '4',
-		label: 'Settings',
-		extra: '⌘S',
-	},*/
-];
-
 const columns = [
 	{
 		title: 'Título',
