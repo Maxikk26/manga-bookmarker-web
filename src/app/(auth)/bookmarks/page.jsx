@@ -1,9 +1,8 @@
 'use client'
 
-import React, {useEffect, useState} from 'react'
-import Table from "@/components/Table";
-import {Badge, Button, Dropdown, Space, Tag} from "antd";
-import {DownOutlined, SearchOutlined, SettingOutlined} from "@ant-design/icons";
+import React, {useEffect, useRef, useState} from 'react'
+import Table, {useTableStore} from "@/components/Table";
+import {Badge, Space, Tag} from "antd";
 import {getUserBookmarks} from "@/services/bookmarkService";
 
 const columns = [
@@ -118,17 +117,47 @@ export default function BookmarksPage() {
 
 	const [bookmarkData, setBookmarkData] = useState([])
 
+	const dataLength = useTableStore((state) => state.dataLength)
+	const setDataLength = useTableStore((state) => state.setDataLength)
+	const currentPage = useTableStore((state) => state.currentPage)
+	const pageSize = useTableStore((state) => state.pageSize)
+
+	const prevPageRef = useRef(currentPage)
+
 	useEffect(() => {
-		obtainUserBookmarks()
+		obtainUserBookmarks(true)
 	}, []);
 
-	const obtainUserBookmarks = async () => {
+	//Detect the change in table page
+	useEffect(() => {
+		//We only ask for more data when incrementing (we save the highest page asked, so we don't repeat api call)
+		if(currentPage > prevPageRef.current) {
+			prevPageRef.current = currentPage;
+			obtainUserBookmarks(false,bookmarkData[bookmarkData.length-1].id);
+		}
+	}, [currentPage]);
+
+	//Detect change in table page size
+	useEffect(() => {
+		console.log((currentPage * pageSize)-1 )
+		console.log("bookmarkData",bookmarkData[(currentPage * pageSize)-1])
+	}, [pageSize]);
+
+
+	const obtainUserBookmarks = async (count = false, lastId = "",pageSize = "5") => {
 		try{
-			const response = await getUserBookmarks({pageSize:'20'});
-			if(response.ok){
-				setBookmarkData(response.result)
+			const queryParams = {
+				pageSize: pageSize,
+				... (count && {count}),
+				... (lastId && {lastId})
 			}
-			console.log("response",response);
+			console.log("queryParams", queryParams)
+			const response = await getUserBookmarks(queryParams);
+			if(response.ok){
+				setBookmarkData(prevBookmarkData => [...prevBookmarkData, ...response.result.bookmarks]);
+				const length = response.result.totalBookmarks ?? dataLength;
+				setDataLength(length)
+			}
 		}catch (error){
 			// console.error("Login error:", error);
 		}
